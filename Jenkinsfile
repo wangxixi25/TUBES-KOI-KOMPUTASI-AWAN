@@ -20,6 +20,15 @@ pipeline {
             }
         }
 
+        stage('Install Composer Dependencies') {
+            steps {
+                script {
+                    // Menjalankan composer install di dalam kontainer Laravel
+                    sh 'docker run --rm -v $(pwd):/var/www koi:latest composer install --no-interaction --prefer-dist'
+                }
+            }
+        }
+
         stage('Remove Existing Containers') {
             steps {
                 script {
@@ -38,7 +47,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Test Application') {
             steps {
@@ -67,4 +75,3 @@ pipeline {
         }
     }
 }
-
