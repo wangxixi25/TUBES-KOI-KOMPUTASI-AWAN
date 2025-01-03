@@ -19,7 +19,7 @@ pipeline {
                 script {
                     // Menyusun dan menginstall dependencies yang diperlukan dari Dockerfile atau package manager
                     // Menyesuaikan dengan jenis project (misalnya untuk Node.js, PHP, Python, dll)
-                    bat 'docker-compose build'  // Jika menggunakan docker-compose untuk membangun image
+                    sh 'docker-compose build'  // Jika menggunakan docker-compose untuk membangun image
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     // Menjalankan aplikasi dengan Docker Compose atau cara lain sesuai dengan proyek
-                    bat 'docker-compose up -d'  // Jika menggunakan Docker Compose
+                    sh 'docker-compose up -d'  // Jika menggunakan Docker Compose
                 }
             }
         }
@@ -38,7 +38,7 @@ pipeline {
                 script {
                     // Menjalankan aplikasi untuk memastikan semuanya berjalan dengan baik
                     // Misalnya menjalankan curl untuk memastikan server berjalan
-                    bat 'curl http://localhost:8080'  // Sesuaikan dengan port aplikasi Anda
+                    sh 'curl http://localhost:8080'  // Sesuaikan dengan port aplikasi Anda
                 }
             }
         }
