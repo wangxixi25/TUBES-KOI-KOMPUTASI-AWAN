@@ -5,7 +5,7 @@ pipeline {
     agent any
 
     environment {
-        PATH = "/usr/local/bin:$PATH"  // Menambahkan lokasi docker-compose ke PATH
+        PATH = "/usr/local/bin/docker-compose"  // Menambahkan lokasi docker-compose ke PATH
     }
 
     stages {
