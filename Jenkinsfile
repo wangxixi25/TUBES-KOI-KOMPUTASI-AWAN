@@ -12,21 +12,7 @@ pipeline {
             }
         }
 
-<<<<<<< Updated upstream
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Menyusun dan menginstall dependencies yang diperlukan dari Dockerfile atau package manager
-                    // Menyesuaikan dengan jenis project (misalnya untuk Node.js, PHP, Python, dll)
-                    sh 'docker-compose build'  // Jika menggunakan docker-compose untuk membangun image
-                }
-            }
-        }
-
-        stage('Run Application') {
-=======
         stage('Build Docker Image') {
->>>>>>> Stashed changes
             steps {
                 script {
                     sh 'docker build -t koi:latest .'  // Menyusun image Docker
