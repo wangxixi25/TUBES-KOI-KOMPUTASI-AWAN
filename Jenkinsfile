@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    stages {
-        stage('Test Shell') {pipeline {
-    agent any
 
     environment {
         PATH = "/usr/local/bin/docker-compose"  // Menambahkan lokasi docker-compose ke PATH
@@ -57,13 +54,6 @@ pipeline {
 
         failure {
             echo 'Pipeline gagal.'
-        }
-    }
-}
-
-            steps {
-                sh 'echo "Hello, World!"'
-            }
         }
     }
 }
