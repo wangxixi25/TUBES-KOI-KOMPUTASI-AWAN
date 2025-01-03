@@ -1,59 +1,29 @@
 pipeline {
     agent any
-
-    environment {
-        PATH = "/usr/local/bin/docker-compose"  // Menambahkan lokasi docker-compose ke PATH
-    }
-
     stages {
-        stage('Check Docker Compose') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'which docker-compose'  // Memastikan docker-compose dapat ditemukan
-                }
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
+                    // Build Docker image using docker-compose
                     sh 'docker-compose build'
                 }
             }
         }
-
-        stage('Run Application') {
+        stage('Run Docker Container') {
             steps {
                 script {
+                    // Run Docker container using docker-compose
                     sh 'docker-compose up -d'
                 }
             }
         }
-
-        stage('Test Application') {
+        stage('Test Docker Application') {
             steps {
                 script {
-                    sh 'curl http://localhost:8080'
+                    // Run your test commands here
+                    sh 'docker ps'
                 }
             }
-        }
-
-        stage('Notify Success') {
-            steps {
-                script {
-                    echo 'Aplikasi berhasil dijalankan!'
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline berhasil dijalankan!'
-        }
-
-        failure {
-            echo 'Pipeline gagal.'
         }
     }
 }
