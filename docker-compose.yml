@@ -8,7 +8,7 @@ services:
     image: app-image
     container_name: app-koi
     ports:
-      - "8082:8000"
+      - "8082:80"
     volumes:
       - .:/var/www
       - ./node_modules:/var/www/node_modules
