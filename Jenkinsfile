@@ -3,6 +3,7 @@ pipeline {
     environment {
         PATH = "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
         GITHUB_REPO = 'https://github.com/wangxixi25/TUBES-KOI-KOMPUTASI-AWAN.git'
+        DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1324751924209254622/cymdDBjGo5EAyzjtxlZiVhBhulkDRvkogNQhQnGQYxbLiKFqfPeg0ZeKhyaTyNYM8dpw'
     }
 
     stages {
@@ -58,7 +59,22 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline berhasil dijalankan!'
+            script {
+                // Kirim notifikasi ke Discord jika pipeline berhasil
+                sh """
+                curl -X POST -H "Content-Type: application/json" \
+                -d '{
+                    "content": "Pipeline berhasil dijalankan! ✅",
+                    "embeds": [
+                        {
+                            "title": "Pipeline Success",
+                            "description": "Pipeline untuk repository ${GITHUB_REPO} telah berhasil dijalankan.",
+                            "color": 3066993
+                        }
+                    ]
+                }' ${DISCORD_WEBHOOK_URL}
+                """
+            }
         }
 
         failure {
