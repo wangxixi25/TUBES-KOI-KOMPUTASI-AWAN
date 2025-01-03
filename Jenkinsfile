@@ -15,8 +15,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Memperbaiki perintah build
                     sh 'docker build -t koi:latest .'  // Menyusun image Docker
+                }
+            }
+        }
+
+        stage('Remove Existing Container') {
+            steps {
+                script {
+                    // Menghapus kontainer lama jika sudah ada
+                    sh 'docker rm -f laravel1 || true'  // Menghapus kontainer yang ada dengan nama laravel1
                 }
             }
         }
