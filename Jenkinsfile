@@ -24,6 +24,7 @@ pipeline {
                     DB_USERNAME=root
                     DB_PASSWORD=root
                     APP_KEY=base64:t2re30r4n/lZWHgVLEkTbbTgl2Y9cskLF9MtAJHQpLQ=
+                    """
                 }
             }
         }
@@ -39,7 +40,8 @@ pipeline {
         stage('Remove Existing Containers') {
             steps {
                 script {
-                    sh 'docker rm -f $(docker ps -aq) || true'  // Menghapus semua kontainer yang ada
+                    // Menghapus semua kontainer yang ada
+                    sh 'docker rm -f $(docker ps -aq) || true' 
                 }
             }
         }
@@ -56,7 +58,8 @@ pipeline {
         stage('Test Application') {
             steps {
                 script {
-                    sh 'curl -f http://localhost:8080 || echo "Test failed!"'
+                    // Menggunakan port 8000 (jika aplikasi berjalan di port 8000)
+                    sh 'curl -f http://localhost:8000 || echo "Test failed!"'
                 }
             }
         }
