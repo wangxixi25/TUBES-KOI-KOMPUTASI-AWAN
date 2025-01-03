@@ -20,11 +20,11 @@ pipeline {
             }
         }
 
-        stage('Remove Existing Container') {
+        stage('Remove Existing Containers') {
             steps {
                 script {
-                    // Menghapus kontainer lama jika sudah ada
-                    sh 'docker rm -f laravel1 || true'  // Menghapus kontainer yang ada dengan nama laravel1
+                    // Menghapus semua kontainer yang ada sebelum menjalankan Docker Compose
+                    sh 'docker rm -f $(docker ps -aq) || true'  // Menghapus semua kontainer yang ada
                 }
             }
         }
