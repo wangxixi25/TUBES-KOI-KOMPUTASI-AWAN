@@ -3,7 +3,7 @@ pipeline {
     environment {
         PATH = "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
         GITHUB_REPO = 'https://github.com/wangxixi25/TUBES-KOI-KOMPUTASI-AWAN.git'
-        DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1324751924209254622/cymdDBjGo5EAyzjtxlZiVhBhulkDRvkogNQhQnGQYxbLiKFqfPeg0ZeKhyaTyNYM8dpw' //link discrod
+        DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1324751924209254622/cymdDBjGo5EAyzjtxlZiVhBhulkDRvkogNQhQnGQYxbLiKFqfPeg0ZeKhyaTyNYM8dpw'
     }
 
     stages {
@@ -16,7 +16,6 @@ pipeline {
         stage('Set Environment Variables') {
             steps {
                 script {
-                    // Membuat file .env secara manual
                     writeFile file: '.env', text: """
                     DB_CONNECTION=mysql
                     DB_HOST=db
@@ -33,7 +32,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t koi:latest .'  // Menyusun image Docker
+                    sh 'docker build -t koi:latest .' 
                 }
             }
         }
@@ -41,8 +40,7 @@ pipeline {
         stage('Remove Existing Containers') {
             steps {
                 script {
-                    // Menghapus semua kontainer yang ada
-                    sh 'docker rm -f $(docker ps -aq) || true' 
+                    sh 'docker rm -f $(docker ps -aq) || true'
                 }
             }
         }
@@ -50,8 +48,8 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    sh 'docker-compose down || true'  // Menghentikan dan menghapus kontainer jika ada
-                    sh 'docker-compose up -d'         // Menjalankan aplikasi dengan Docker Compose
+                    sh 'docker-compose down || true'
+                    sh 'docker-compose up -d'
                 }
             }
         }
@@ -59,7 +57,6 @@ pipeline {
         stage('Test Application') {
             steps {
                 script {
-                    // Menggunakan port 8000 (jika aplikasi berjalan di port 8000)
                     sh 'curl -f http://localhost:8000 || echo "Test failed!"'
                 }
             }
@@ -78,9 +75,8 @@ pipeline {
         success {
             script {
                 // Kirim notifikasi ke Discord jika pipeline berhasil
-                sh """
-                curl -X POST -H "Content-Type: application/json" \
-                -d '{
+                def payload = """
+                {
                     "content": "Pipeline berhasil dijalankan! ✅",
                     "embeds": [
                         {
@@ -89,17 +85,17 @@ pipeline {
                             "color": 3066993
                         }
                     ]
-                }' ${https://discord.com/api/webhooks/1324751924209254622/cymdDBjGo5EAyzjtxlZiVhBhulkDRvkogNQhQnGQYxbLiKFqfPeg0ZeKhyaTyNYM8dpw}
+                }
                 """
+                sh "curl -X POST -H 'Content-Type: application/json' -d '${payload}' ${DISCORD_WEBHOOK_URL}"
             }
         }
 
         failure {
             script {
                 // Kirim notifikasi ke Discord jika pipeline gagal
-                sh """
-                curl -X POST -H "Content-Type: application/json" \
-                -d '{
+                def payload = """
+                {
                     "content": "Pipeline gagal. ❌",
                     "embeds": [
                         {
@@ -108,8 +104,9 @@ pipeline {
                             "color": 15158332
                         }
                     ]
-                }' ${DISCORD_WEBHOOK_URL}
+                }
                 """
+                sh "curl -X POST -H 'Content-Type: application/json' -d '${payload}' ${DISCORD_WEBHOOK_URL}"
             }
         }
     }
