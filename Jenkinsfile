@@ -23,8 +23,7 @@ pipeline {
                     DB_DATABASE=laravel1
                     DB_USERNAME=root
                     DB_PASSWORD=root
-                    APP_KEY=base64:...
-                    """
+                    APP_KEY=base64:t2re30r4n/lZWHgVLEkTbbTgl2Y9cskLF9MtAJHQpLQ=
                 }
             }
         }
