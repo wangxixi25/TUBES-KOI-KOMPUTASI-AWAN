@@ -32,10 +32,13 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    sh 'docker-compose up -d'  // Menjalankan aplikasi dengan Docker Compose
+                    // Mengecek apakah Docker Compose sudah berjalan dan menghentikan jika ada
+                    sh 'docker-compose down || true'  // Menghentikan dan menghapus kontainer jika ada
+                    sh 'docker-compose up -d'         // Menjalankan aplikasi dengan Docker Compose
                 }
             }
         }
+
 
         stage('Test Application') {
             steps {
