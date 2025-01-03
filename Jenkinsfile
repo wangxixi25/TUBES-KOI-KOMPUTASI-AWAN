@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Mengambil image terbaru dan membangun container
-                    sh 'docker built -t koi:latest .
+                    sh 'docker built -t koi:latest .'
                 }
             }
         }
