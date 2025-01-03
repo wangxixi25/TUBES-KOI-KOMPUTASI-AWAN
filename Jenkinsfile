@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image using docker-compose
-                    sh 'docker-compose build'
+                    sh 'docker buid -t koi:latest .'
                 }
             }
         }
