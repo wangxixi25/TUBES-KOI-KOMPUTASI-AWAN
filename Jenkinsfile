@@ -14,15 +14,15 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Menyusun dan menginstall dependencies yang diperlukan dari Dockerfile atau package manager
-                    // Menyesuaikan dengan jenis project (misalnya untuk Node.js, PHP, Python, dll)
-                    sh 'docker-compose build'  // Jika menggunakan docker-compose untuk membangun image
-                }
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         script {
+        //             // Menyusun dan menginstall dependencies yang diperlukan dari Dockerfile atau package manager
+        //             // Menyesuaikan dengan jenis project (misalnya untuk Node.js, PHP, Python, dll)
+        //             sh 'docker-compose build'  // Jika menggunakan docker-compose untuk membangun image
+        //         }
+        //     }
+        // }
 
         stage('Run Application') {
             steps {
