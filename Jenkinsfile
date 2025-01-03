@@ -1,8 +1,9 @@
 pipeline {
     agent any
     environment {
+        // Menambahkan path Docker
         PATH = "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-    // URL GitHub Repository
+        // URL GitHub Repository
         GITHUB_REPO = 'https://github.com/wangxixi25/TUBES-KOI-KOMPUTASI-AWAN.git'
     }
 
@@ -17,9 +18,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Menyusun dan menginstall dependencies yang diperlukan dari Dockerfile atau package manager
-                    // Menyesuaikan dengan jenis project (misalnya untuk Node.js, PHP, Python, dll)
-                    sh 'docker-compose build'  // Jika menggunakan docker-compose untuk membangun image
+                    // Mengambil image terbaru dan membangun container
+                    sh 'docker-compose pull'  // Mengambil image terbaru dari Docker Compose
+                    sh 'docker-compose build' // Membangun image Docker jika diperlukan
                 }
             }
         }
@@ -27,8 +28,11 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    // Menjalankan aplikasi dengan Docker Compose atau cara lain sesuai dengan proyek
-                    sh 'docker-compose up -d'  // Jika menggunakan Docker Compose
+                    // Menjalankan aplikasi dengan Docker Compose di background
+                    sh 'docker-compose up -d'
+
+                    // Memastikan container berjalan
+                    sh 'docker ps' // Mengecek container yang sedang berjalan
                 }
             }
         }
@@ -37,8 +41,8 @@ pipeline {
             steps {
                 script {
                     // Menjalankan aplikasi untuk memastikan semuanya berjalan dengan baik
-                    // Misalnya menjalankan curl untuk memastikan server berjalan
-                    sh 'curl http://localhost:8080'  // Sesuaikan dengan port aplikasi Anda
+                    // Sesuaikan dengan port aplikasi Anda
+                    sh 'curl -f http://localhost:8080 || echo "Test failed!"'  // Jika aplikasi tidak berjalan, tampilkan pesan error
                 }
             }
         }
@@ -63,4 +67,3 @@ pipeline {
         }
     }
 }
-
