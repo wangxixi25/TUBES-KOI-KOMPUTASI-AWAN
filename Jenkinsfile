@@ -1,19 +1,18 @@
 pipeline {
     agent any
-
     environment {
-        // URL GitHub Repository
+        PATH = "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
         GITHUB_REPO = 'https://github.com/wangxixi25/TUBES-KOI-KOMPUTASI-AWAN.git'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone repository GitHub
                 checkout scm
             }
         }
 
+<<<<<<< Updated upstream
         stage('Install Dependencies') {
             steps {
                 script {
@@ -25,20 +24,40 @@ pipeline {
         }
 
         stage('Run Application') {
+=======
+        stage('Build Docker Image') {
+>>>>>>> Stashed changes
             steps {
                 script {
-                    // Menjalankan aplikasi dengan Docker Compose atau cara lain sesuai dengan proyek
-                    sh 'docker-compose up -d'  // Jika menggunakan Docker Compose
+                    sh 'docker build -t koi:latest .'  // Menyusun image Docker
                 }
             }
         }
 
+        stage('Remove Existing Containers') {
+            steps {
+                script {
+                    // Menghapus semua kontainer yang ada sebelum menjalankan Docker Compose
+                    sh 'docker rm -f $(docker ps -aq) || true'  // Menghapus semua kontainer yang ada
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                script {
+                    // Mengecek apakah Docker Compose sudah berjalan dan menghentikan jika ada
+                    sh 'docker-compose down || true'  // Menghentikan dan menghapus kontainer jika ada
+                    sh 'docker-compose up -d'         // Menjalankan aplikasi dengan Docker Compose
+                }
+            }
+        }
+
+
         stage('Test Application') {
             steps {
                 script {
-                    // Menjalankan aplikasi untuk memastikan semuanya berjalan dengan baik
-                    // Misalnya menjalankan curl untuk memastikan server berjalan
-                    sh 'curl http://localhost:8080'  // Sesuaikan dengan port aplikasi Anda
+                    sh 'curl -f http://localhost:8080 || echo "Test failed!"'
                 }
             }
         }
@@ -47,7 +66,6 @@ pipeline {
             steps {
                 script {
                     echo 'Aplikasi berhasil dijalankan!'
-                    // Kirim notifikasi sukses ke Discord atau lainnya jika diperlukan
                 }
             }
         }
