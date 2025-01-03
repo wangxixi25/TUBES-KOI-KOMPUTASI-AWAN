@@ -18,7 +18,17 @@ services:
       - APP_KEY=base64:...
     depends_on:
       - db
-    command: ["sh", "-c", "npm install && npm run production && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000"]
+    command: ["sh", "-c", "
+        # Cek apakah tabel migrations sudah ada di database
+        if ! php artisan migrate:status | grep -q 'No migrations'; then
+            echo 'Database sudah dimigrasi sebelumnya. Lewati migrasi dan seeding.';
+        else
+            echo 'Menjalankan migrasi dan seeding...';
+            php artisan migrate --force && php artisan db:seed --force;
+        fi
+        # Jalankan aplikasi Laravel
+        npm install && npm run production && php artisan serve --host=0.0.0.0 --port=8000
+    "]
 
   db:
     image: mysql:8.0
