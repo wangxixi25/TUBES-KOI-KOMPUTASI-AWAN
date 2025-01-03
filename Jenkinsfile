@@ -15,12 +15,11 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Docker Build') {
             steps {
                 script {
                     // Mengambil image terbaru dan membangun container
-                    sh 'docker-compose pull'  // Mengambil image terbaru dari Docker Compose
-                    sh 'docker-compose build' // Membangun image Docker jika diperlukan
+                    sh 'docker built -t koi:latest .
                 }
             }
         }
