@@ -12,6 +12,23 @@ pipeline {
             }
         }
 
+        stage('Set Environment Variables') {
+            steps {
+                script {
+                    // Membuat file .env secara manual
+                    writeFile file: '.env', text: """
+                    DB_CONNECTION=mysql
+                    DB_HOST=db
+                    DB_PORT=3306
+                    DB_DATABASE=laravel1
+                    DB_USERNAME=root
+                    DB_PASSWORD=root
+                    APP_KEY=base64:...
+                    """
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -20,19 +37,9 @@ pipeline {
             }
         }
 
-        stage('Install Composer Dependencies') {
-            steps {
-                script {
-                    // Menjalankan composer install di dalam kontainer Laravel
-                    sh 'docker run --rm -v $(pwd):/var/www koi:latest composer install --no-interaction --prefer-dist'
-                }
-            }
-        }
-
         stage('Remove Existing Containers') {
             steps {
                 script {
-                    // Menghapus semua kontainer yang ada sebelum menjalankan Docker Compose
                     sh 'docker rm -f $(docker ps -aq) || true'  // Menghapus semua kontainer yang ada
                 }
             }
@@ -41,7 +48,6 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    // Mengecek apakah Docker Compose sudah berjalan dan menghentikan jika ada
                     sh 'docker-compose down || true'  // Menghentikan dan menghapus kontainer jika ada
                     sh 'docker-compose up -d'         // Menjalankan aplikasi dengan Docker Compose
                 }
