@@ -10,7 +10,7 @@
                 </p>
             </div>
             <div class="hidden md:flex md:col-span-5">
-                <img src="{{ asset('gudang.svg') }}" class="w-full" />
+                <img src="{{ asset('welcome.svg') }}" class="w-full" />
             </div>
         </div>
     </div>
