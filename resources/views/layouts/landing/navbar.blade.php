@@ -1,9 +1,9 @@
 <!-- Navbar -->
-<div class="w-full border-b border-dashed border-[#1c6edd] bg-[#1c6edd] p-5">
+<div class="w-full border-b-2 border-dashed border-[#1c6edd] bg-[#1c6edd] p-5">
     <div class="container mx-auto">
         <div class="flex justify-between items-center">
             <a href="/" class="flex items-center gap-2">
-                <img src="{{ asset('logo.png') }}" class="w-7 h-7 object-center object-cover" />
+                <img src="{{ asset('logo.png') }}" class="w-10 h-10 object-center object-cover" />
                 <h1 class="text-white text-2xl font-semibold">Gudangku</h1>
             </a>
             <div class="flex gap-4 text-white">
