@@ -1,4 +1,4 @@
-<div class="text-white w-full py-10" style="background-color: #2c386c;">
+<div class="text-white w-full py-10" style="background-color: #004aad;">
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
             <div class="md:col-span-7 flex flex-col gap-4">
