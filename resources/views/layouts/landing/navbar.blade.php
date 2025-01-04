@@ -1,20 +1,21 @@
 <!-- Navbar -->
-<div class="w-full border-b border-dashed border-sky-800 bg-sky-900 p-5">
+<div class="w-full border-b-2 border-dashed border-[#287ff6] bg-[#287ff6] p-5">
     <div class="container mx-auto">
         <div class="flex justify-between items-center">
             <a href="/" class="flex items-center gap-2">
-                <img src="{{ asset('good one koi.png') }}" class="w-7 h-7 object-center object-cover" />
+                <img src="{{ asset('logo.png') }}" class="w-10 h-10 object-center object-cover" />
                 <h1 class="text-white text-2xl font-semibold">Good One Koi</h1>
             </a>
             <div class="flex gap-4 text-white">
-                @guest
-                    <a href="{{ route('login') }}" class="border px-2 py-1 rounded-lg font-medium hover:bg-sky-900">
-                        Masuk
-                    </a>
-                    <a href="{{ route('register') }}" class="border px-2 py-1 rounded-lg font-medium hover:bg-sky-900">
-                        Daftar
-                    </a>
-                @endguest
+            @guest
+                <a href="{{ route('login') }}" class="border border-[#287ff6] px-2 py-1 rounded-lg font-medium hover:bg-[#004aad]">
+                    Masuk
+                </a>
+                <a href="{{ route('register') }}" class="border border-[#287ff6] px-2 py-1 rounded-lg font-medium hover:bg-[#004aad]">
+                    Daftar
+                </a>
+            @endguest
+
                 @auth
                     <div class="hidden md:flex items-center gap-4">
                         <a href="{{ route('cart.index') }}" class="relative group">
