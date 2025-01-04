@@ -13,6 +13,22 @@ pipeline {
             }
         }
 
+        stage('Set Environment Variables') {
+            steps {
+                script {
+                    writeFile file: '.env', text: """
+                    DB_CONNECTION=mysql
+                    DB_HOST=db
+                    DB_PORT=3306
+                    DB_DATABASE=laravel1
+                    DB_USERNAME=root
+                    DB_PASSWORD=root
+                    APP_KEY=base64:t2re30r4n/lZWHgVLEkTbbTgl2Y9cskLF9MtAJHQpLQ=
+                    """
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -24,8 +40,7 @@ pipeline {
         stage('Remove Existing Containers') {
             steps {
                 script {
-                    // Menghapus semua kontainer yang ada sebelum menjalankan Docker Compose
-                    sh 'docker rm -f $(docker ps -aq) || true'  // Menghapus semua kontainer yang ada
+                    sh 'docker rm -f $(docker ps -aq) || true'
                 }
             }
         }
@@ -33,9 +48,8 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    // Mengecek apakah Docker Compose sudah berjalan dan menghentikan jika ada
-                    sh 'docker-compose down || true'  // Menghentikan dan menghapus kontainer jika ada
-                    sh 'docker-compose up -d'         // Menjalankan aplikasi dengan Docker Compose
+                    sh 'docker-compose down || true'
+                    sh 'docker-compose up -d'
                 }
             }
         }
@@ -43,7 +57,7 @@ pipeline {
         stage('Test Application') {
             steps {
                 script {
-                    sh 'curl -f http://localhost:8080 || echo "Test failed!"'
+                    sh 'curl -f http://localhost:8000 || echo "Test failed!"'
                 }
             }
         }
@@ -61,9 +75,8 @@ pipeline {
         success {
             script {
                 // Kirim notifikasi ke Discord jika pipeline berhasil
-                sh """
-                curl -X POST -H "Content-Type: application/json" \
-                -d '{
+                def payload = """
+                {
                     "content": "Pipeline berhasil dijalankan! ✅",
                     "embeds": [
                         {
@@ -72,13 +85,29 @@ pipeline {
                             "color": 3066993
                         }
                     ]
-                }' ${DISCORD_WEBHOOK_URL}
+                }
                 """
+                sh "curl -X POST -H 'Content-Type: application/json' -d '${payload}' ${DISCORD_WEBHOOK_URL}"
             }
         }
 
         failure {
-            echo 'Pipeline gagal.'
+            script {
+                // Kirim notifikasi ke Discord jika pipeline gagal
+                def payload = """
+                {
+                    "content": "Pipeline gagal. ❌",
+                    "embeds": [
+                        {
+                            "title": "Pipeline Failure",
+                            "description": "Pipeline untuk repository ${GITHUB_REPO} gagal dijalankan. Silakan periksa log.",
+                            "color": 15158332
+                        }
+                    ]
+                }
+                """
+                sh "curl -X POST -H 'Content-Type: application/json' -d '${payload}' ${DISCORD_WEBHOOK_URL}"
+            }
         }
     }
 }
