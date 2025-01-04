@@ -1,17 +1,17 @@
 <!-- Navbar -->
-<div class="w-full" style="background-color: #ffde59;">
+<div class="w-full border-b border-dashed border-[#1c6edd] bg-[#1c6edd] p-5">
     <div class="container mx-auto">
         <div class="flex justify-between items-center">
             <a href="/" class="flex items-center gap-2">
-                <img src="{{ asset('warehouse.png') }}" class="w-7 h-7 object-center object-cover" />
-                <h1 class="text-black text-2xl font-semibold">Gudangku</h1>
+                <img src="{{ asset('logo.png') }}" class="w-7 h-7 object-center object-cover" />
+                <h1 class="text-white text-2xl font-semibold">Gudangku</h1>
             </a>
             <div class="flex gap-4 text-white">
             @guest
-                <a href="{{ route('login') }}" class="border px-2 py-1 rounded-lg font-medium hover:bg-[#004aad]">
+                <a href="{{ route('login') }}" class="border border-[#1c6edd] px-2 py-1 rounded-lg font-medium hover:bg-[#1c6edd]">
                     Masuk
                 </a>
-                <a href="{{ route('register') }}" class="border px-2 py-1 rounded-lg font-medium hover:bg-[#004aad]">
+                <a href="{{ route('register') }}" class="border border-[#1c6edd] px-2 py-1 rounded-lg font-medium hover:bg-[#1c6edd]">
                     Daftar
                 </a>
             @endguest
