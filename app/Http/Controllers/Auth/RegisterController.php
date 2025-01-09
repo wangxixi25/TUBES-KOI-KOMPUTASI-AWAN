@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role; // Tambahkan use untuk Role
 
 class RegisterController extends Controller
 {
@@ -36,6 +37,15 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
+            // Menetapkan role ID 2 (Customer) ke pengguna baru
+            $role = Role::find(2); // Cari role dengan ID 2
+            if ($role) {
+                $user->assignRole($role); // Tetapkan role ke pengguna
+            } else {
+                // Jika role tidak ditemukan, bisa menambahkan logika penanganan
+                return back()->withErrors(['error' => 'Role tidak ditemukan.']);
+            }
+
             // Jika berhasil, kirimkan pesan sukses
             return redirect()->route('register')->with('success', 'Akun berhasil dibuat! Silakan login.');
         } catch (\Exception $e) {
@@ -44,3 +54,4 @@ class RegisterController extends Controller
         }
     }
 }
+

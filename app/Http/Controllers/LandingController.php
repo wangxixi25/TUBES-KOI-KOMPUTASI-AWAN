@@ -21,7 +21,7 @@ class LandingController extends Controller
         $products = Product::with('category', 'supplier'
         )->when($search, function($query) use($search){
             $query = $query->where('name', 'like', '%'.$search.'%');
-        })->paginate(6);
+        })->latest()->paginate(6);
 
         $categories = Category::with('products')->limit(12)->get();
 

@@ -17,18 +17,20 @@ use App\Http\Controllers\{
     CategoryController as LandingCategoryController, VehicleController as LandingVehicleController
 };
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
+
 
 // Rute untuk halaman landing (home page)
 Route::get('/', LandingController::class)->name('landing');
 
-// Rute untuk halaman register
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
-Route::post('/register', [RegisterController::class, 'register'])->middleware('guest');
+// // Rute untuk halaman register
+// Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+// Route::post('/register', [RegisterController::class, 'register'])->middleware('guest');
 
-// Rute untuk halaman welcome (halaman setelah registrasi berhasil)
-Route::get('/welcome', function () {
-    return view('welcome');
-})->name('welcome');
+// // Rute untuk halaman welcome (halaman setelah registrasi berhasil)
+// Route::get('/welcome', function () {
+//     return view('landing.welcome');
+// })->name('welcome');
 
 Route::controller(LandingCategoryController::class)->as('category.')->group(function(){
     Route::get('/category', 'index')->name('index');

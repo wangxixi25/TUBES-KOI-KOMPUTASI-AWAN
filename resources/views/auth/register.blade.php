@@ -70,37 +70,6 @@
         </div>
     </div>
 
-    <!-- SweetAlert for Success Notification -->
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed || result.isDismissed) {
-                    // Arahkan ke halaman welcome
-                    window.location.href = "{{ route('welcome') }}";
-                }
-            });
-        </script>
-    @endif
-
-    <!-- SweetAlert for Error Notification -->
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal!',
-                text: '{{ session('error') }}',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                // Tidak ada pengalihan, tetap di halaman yang sama (register)
-            });
-        </script>
-    @endif
-
 </body>
 
 </html>

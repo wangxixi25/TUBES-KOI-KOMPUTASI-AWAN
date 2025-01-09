@@ -16,16 +16,19 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search;
-
-        $products = Product::with('category', 'supplier')->when($search, function($query) use($search){
-            $query = $query->where('name', 'like', '%'.$search.'%');
-        })->orWhereHas('category', function($query) use($search){
-            $query = $query->where('name', 'like', '%'.$search.'%');
+        $search = $request->input('search', ''); // Mendapatkan nilai pencarian dari input, default kosong jika tidak ada
+    
+        // Menyaring produk berdasarkan pencarian
+        $products = Product::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%$search%")
+                         ->orWhere('description', 'like', "%$search%");
         })->get();
-
-        return view('landing.product.index', compact('products', 'search'));
-    }
+    
+        $categories = Category::all();
+    
+        // Mengirimkan variabel ke view
+        return view('landing.welcome', compact('products', 'categories', 'search'));
+    }    
 
     /**
      * Display the specified resource.
