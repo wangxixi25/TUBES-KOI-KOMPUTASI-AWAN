@@ -15,10 +15,12 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="MobileOptimized" content="320" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
-    <link rel="icon" href="{{ asset('icon.png') }}" type="image/x-icon" />
+    <!-- <link rel="icon" href="{{ asset('icon.png') }}" type="image/x-icon" /> -->
     <link rel="shortcut icon" href="{{ asset('icon.png') }}" type="image/x-icon" />
     <!-- Tabler Core -->
     <link href="{{ asset('dist/css/tabler.min.css') }}" rel="stylesheet" />
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="antialiased border-top-wide border-primary d-flex flex-column">
@@ -27,47 +29,37 @@
             <form class="card card-md border-0 rounded-3" action="{{ route('register') }}" method="POST">
                 @csrf
                 <div class="card-body">
-                    <h3 class="text-center mb-3 font-weight-medium">
-                        Daftar
-                    </h3>
+                    <h3 class="text-center mb-3 font-weight-medium">Daftar</h3>
                     <div class="mb-3">
                         <label class="form-label">Nama</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                            placeholder="masukan name anda" name="name">
+                            placeholder="Masukan nama Anda" name="name" value="{{ old('name') }}">
                         @error('name')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror"
-                            placeholder="masukan email anda" name="email">
+                            placeholder="Masukan email Anda" name="email" value="{{ old('email') }}">
                         @error('email')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kata Sandi</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"
-                            placeholder="masukan kata sandi anda" name="password">
+                            placeholder="Masukan kata sandi Anda" name="password">
                         @error('password')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Konfirmasi Kata Sandi</label>
                         <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-                            placeholder="masukan konfirmasi kata sandi anda" name="password_confirmation">
+                            placeholder="Masukan konfirmasi kata sandi Anda" name="password_confirmation">
                         @error('password_confirmation')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-footer">
@@ -77,6 +69,38 @@
             </form>
         </div>
     </div>
+
+    <!-- SweetAlert for Success Notification -->
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed || result.isDismissed) {
+                    // Arahkan ke halaman welcome
+                    window.location.href = "{{ route('welcome') }}";
+                }
+            });
+        </script>
+    @endif
+
+    <!-- SweetAlert for Error Notification -->
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                // Tidak ada pengalihan, tetap di halaman yang sama (register)
+            });
+        </script>
+    @endif
+
 </body>
 
 </html>

@@ -18,7 +18,17 @@ use App\Http\Controllers\{
 };
 use Illuminate\Support\Facades\Route;
 
+// Rute untuk halaman landing (home page)
 Route::get('/', LandingController::class)->name('landing');
+
+// Rute untuk halaman register
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+Route::post('/register', [RegisterController::class, 'register'])->middleware('guest');
+
+// Rute untuk halaman welcome (halaman setelah registrasi berhasil)
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 
 Route::controller(LandingCategoryController::class)->as('category.')->group(function(){
     Route::get('/category', 'index')->name('index');
