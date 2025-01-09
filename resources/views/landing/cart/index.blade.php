@@ -141,7 +141,6 @@
                                         </label>
                                         <input type="email"
                                             class="rounded-lg border p-2 text-sm text-gray-700 focus:outline-none bg-gray-200 cursor-not-allowed"
-                                            placeholder="" value="{{ Auth::user()->department }}" name="department"
                                             readonly />
                                     </div>
                                     <div class="flex flex-col gap-y-2">

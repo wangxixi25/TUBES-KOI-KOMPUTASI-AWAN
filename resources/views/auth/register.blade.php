@@ -50,7 +50,6 @@
                             </div>
                         @enderror
                     </div>
-                    
                     <div class="mb-3">
                         <label class="form-label">Kata Sandi</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"

@@ -10,7 +10,6 @@
                             <th>#</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>Department</th>
                             <th>Role</th>
                             <th>Aksi</th>
                         </tr>
@@ -21,7 +20,6 @@
                                 <td>{{ $i + $users->firstItem() }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->department }}</td>
                                 <td>
                                     @foreach ($user->roles as $role)
                                         {{ $role->name }}
