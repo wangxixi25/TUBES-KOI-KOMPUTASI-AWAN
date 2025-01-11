@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 
 
+
+
 // Rute untuk halaman landing (home page)
 Route::get('/', LandingController::class)->name('landing');
 
@@ -71,9 +73,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
         ->except('show', 'create', 'edit')
         ->middleware('permission:index-supplier');
 
-    Route::resource('/product', ProductController::class)
+        Route::resource('/product', \App\Http\Controllers\Admin\ProductController::class)
         ->except('show')
-        ->middleware('permission:index-product');
+        ->middleware('permission:index-product');    
 
     Route::resource('/stock', StockController::class)
         ->only('index', 'update')

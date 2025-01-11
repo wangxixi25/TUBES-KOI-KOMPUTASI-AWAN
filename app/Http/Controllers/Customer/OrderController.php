@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 class OrderController extends Controller
 {
     use HasImage;
+
     /**
      * Display a listing of the resource.
      *
@@ -20,15 +21,14 @@ class OrderController extends Controller
      */
     public function index()
     {
+        // Mengambil semua orders milik user yang sedang login
         $orders = Order::with('user')->where('user_id', Auth::id())->paginate(10);
 
-        $product = [];
+        // Mengambil produk terkait berdasarkan nama dan kuantitas
+        $products = Product::all(); // Misalnya mengambil semua produk, atau bisa disesuaikan dengan kebutuhan
 
-        foreach($orders as $order){
-            $product = Product::where('name', $order->name)->where('quantity', $order->quantity)->get();
-        }
-
-        return view('customer.order.index', compact('orders', 'product'));
+        // Kirim data orders dan produk ke view
+        return view('customer.order.index', compact('orders', 'products'));
     }
 
     /**
@@ -41,6 +41,7 @@ class OrderController extends Controller
     {
         $image = $this->uploadImage($request, $path = 'public/orders/', $name = 'image');
 
+        // Membuat data order baru
         Order::create([
             'user_id' => Auth::id(),
             'name' => $request->name,
@@ -63,12 +64,14 @@ class OrderController extends Controller
     {
         $image = $this->uploadImage($request, $path = 'public/orders/', $name = 'image');
 
+        // Mengupdate data order
         $order->update([
             'name' => $request->name,
             'quantity' => $request->quantity,
             'unit' => $request->unit,
         ]);
 
+        // Jika ada file image, update file image tersebut
         if($request->file($name)){
             $this->updateImage(
                 $path = 'public/orders/', $name = 'image', $data = $order, $url = $image->hashName()
@@ -86,6 +89,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        // Menghapus order dan file image terkait
         $order->delete();
 
         Storage::disk('local')->delete('public/orders/'. basename($order->image));
