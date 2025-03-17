@@ -55,6 +55,8 @@ Route::controller(CartController::class)->middleware(['permission:create-transac
     Route::delete('/cart/destroy/{cart:id}', 'destroy')->name('cart.destroy');
     Route::put('/cart/update/{cart:id}', 'update')->name('cart.update');
     Route::post('/cart/order/{product:slug}', 'order')->name('cart.order');
+    Route::get('/wilayah/{level}', [WilayahController::class, 'getWilayah']);
+
 });
 
 Route::post('/transaction', [LandingTransactionController::class, 'store'])
@@ -123,3 +125,27 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'middleware' => ['aut
         Route::put('/setting/update/{user}', 'update')->name('setting.update');
     });
 });
+
+use Illuminate\Support\Facades\Http;
+
+Route::get('/api/provinces', function() {
+    $response = Http::get('https://emsifa.github.io/api-wilayah-indonesia/api/provinces.json');
+    return response()->json($response->json());
+});
+
+Route::get('/api/wilayah/{level}/{id}', function($level, $id) {
+    $url = match($level) {
+        'regencies' => "https://emsifa.github.io/api-wilayah-indonesia/api/regencies/{$id}.json",
+        'districts' => "https://emsifa.github.io/api-wilayah-indonesia/api/districts/{$id}.json",
+        'villages' => "https://emsifa.github.io/api-wilayah-indonesia/api/villages/{$id}.json",
+        default => null,
+    };
+
+    if (!$url) {
+        return response()->json(['error' => 'Invalid level'], 400);
+    }
+
+    $response = Http::get($url);
+    return response()->json($response->json());
+});
+
